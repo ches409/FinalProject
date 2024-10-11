@@ -49,7 +49,7 @@ public class MemberController {
 					case 2:
 						return "redirect:/";
 					default:
-						return "redirect:/adminHome";
+						return "redirect:/";
 				}
 			}
 			else {
@@ -203,11 +203,6 @@ public class MemberController {
 	public String mypageHandler(HttpSession session, Model model) {
 		LoginResponse auth = (LoginResponse)session.getAttribute("auth");
 		
-		// auth가 없으면 로그인 페이지로
-		if(auth == null) {
-			return "redirect:/login";
-		}
-		
 		MemberDO member = memberSo.selectedByMember_id(auth.getMember_id());
 		
 		String roleName;
@@ -228,6 +223,7 @@ public class MemberController {
 		model.addAttribute("m_role", roleName);
 		model.addAttribute("m_acctid", member.getM_acctid());
 		model.addAttribute("m_email", member.getM_email());
+		model.addAttribute("menu", "mypage");
 		return "mypage";
 	}
 	
