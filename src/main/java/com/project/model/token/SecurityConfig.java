@@ -31,18 +31,19 @@ public class SecurityConfig {
 			// CSRF 비활성화 (REST API 등에서 주로 사용)
 			.csrf(AbstractHttpConfigurer::disable)
 			
-            // 세션이 아님
+            // 세션 사용x
             .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            .authorizeHttpRequests(authorize -> authorize
-            		// 인증이 필요하지 않은 페이지
-                    .requestMatchers("/login").permitAll()
-                    // 그 외 모든 페이지는 인증 필요
-                    .anyRequest().authenticated())
-            
             // 토큰 사용
             .httpBasic(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            
+            .authorizeHttpRequests(authorize -> authorize
+            		// 인증이 필요하지 않은 페이지
+                    .requestMatchers("/login", "/findcheck", "/findid", "/findpwd", "/agreement", "/signupform").permitAll()
+                    // 그 외 모든 페이지는 인증 필요
+                    .anyRequest().authenticated())
             
             // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, memberSo),
