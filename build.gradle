@@ -39,6 +39,8 @@ dependencies {
 	implementation fileTree(dir: '/src/main/webapp/WEB-INF/lib', include: '*.jar')
 	implementation group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.0.52'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 }	
 
 tasks.named('test') {
