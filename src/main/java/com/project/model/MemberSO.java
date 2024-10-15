@@ -1,12 +1,6 @@
 package com.project.model;
 
-import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,25 +44,25 @@ public class MemberSO {
 		return memberDao.findMember_idByM_acctid(m_acctid);
 	}
 	
-	public List<GrantedAuthority> getAuthorities(MemberDO member) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        
-        switch (member.getM_role()) {
-            case 1:
-                authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
-                break;
-            case 2:
-                authorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
-                break;
-            case 0:
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid role value: " + member.getM_role());
-        }
-
-        return authorities;
-    }
+//	public List<GrantedAuthority> getAuthorities(MemberDO member) {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        
+//        switch (member.getM_role()) {
+//            case 1:
+//                authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+//                break;
+//            case 2:
+//                authorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
+//                break;
+//            case 0:
+//                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//                break;
+//            default:
+//                throw new IllegalArgumentException("Invalid role value: " + member.getM_role());
+//        }
+//
+//        return authorities;
+//    }
 	
 	// 로그인
 	public LoginResponse login(String m_acctid, String m_acctpwd) {
