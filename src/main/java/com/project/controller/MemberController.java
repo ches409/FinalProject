@@ -2,6 +2,8 @@ package com.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,10 @@ import com.project.model.MemberSO;
 import com.project.model.request.LoginRequest;
 import com.project.model.request.SignupRequest;
 import com.project.model.response.LoginResponse;
+import com.project.model.token.JwtTokenProvider;
+import com.project.model.token.TokenResponse;
 
+import ch.qos.logback.core.subst.Token;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -23,6 +28,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberSO memberSo;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	public MemberController(MemberSO memberSo) {
 		this.memberSo = memberSo;
@@ -33,33 +40,54 @@ public class MemberController {
 		return "login";
 	}
 	
+//	@PostMapping("/loginProcess")
+//	public String loginProcessHandler(LoginRequest req, HttpSession session) {
+//		try {
+//			LoginResponse auth = memberSo.login(req.getM_acctid(), req.getM_acctpwd());
+//			
+//			if(auth != null) {
+//				session.setAttribute("auth", auth);
+//				
+//				int m_role = memberSo.checkM_role(auth.getMember_id());
+//				
+//				switch(m_role) { //리턴주소 추후 변경
+//					case 1:
+//						return "redirect:/";
+//					case 2:
+//						return "redirect:/";
+//					default:
+//						return "redirect:/";
+//				}
+//			}
+//			else {
+//				session.setAttribute("loginFailMsg", "로그인에 실패했습니다.");
+//				return "redirect:/login?error=loginFailed";
+//			}
+//		}
+//		catch(EmptyResultDataAccessException e) {
+//			session.setAttribute("loginFailMsg", "일치하는 정보가 없습니다.");
+//			return "redirect:/login?error=loginFailed";
+//		}
+//	}
 	@PostMapping("/loginProcess")
-	public String loginProcessHandler(LoginRequest req, HttpSession session) {
+	public ResponseEntity<?> loginProcessHandler(@RequestParam LoginRequest req) {
 		try {
 			LoginResponse auth = memberSo.login(req.getM_acctid(), req.getM_acctpwd());
 			
 			if(auth != null) {
-				session.setAttribute("auth", auth);
+				String accessToken = jwtTokenProvider.createAccessToken(auth.getMember_id());
+				String refreshToken = jwtTokenProvider.createRefreshToken(auth.getMember_id());
 				
 				int m_role = memberSo.checkM_role(auth.getMember_id());
 				
-				switch(m_role) { //리턴주소 추후 변경
-					case 1:
-						return "redirect:/";
-					case 2:
-						return "redirect:/";
-					default:
-						return "redirect:/";
-				}
+				return ResponseEntity.ok(new TokenResponse(accessToken, refreshToken, m_role));
 			}
 			else {
-				session.setAttribute("loginFailMsg", "로그인에 실패했습니다.");
-				return "redirect:/login?error=loginFailed";
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패했습니다.");
 			}
 		}
 		catch(EmptyResultDataAccessException e) {
-			session.setAttribute("loginFailMsg", "일치하는 정보가 없습니다.");
-			return "redirect:/login?error=loginFailed";
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("일치하는 정보가 없습니다.");
 		}
 	}
 	

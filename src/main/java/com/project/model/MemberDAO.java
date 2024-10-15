@@ -33,6 +33,16 @@ public class MemberDAO {
 		return member;
 	}
 	
+	public MemberDO findMember_idByM_acctid(String m_acctid) {
+		this.sql = "select member_id from final_member where m_acctid=?";
+		try {
+			return this.jdbcTemplate.queryForObject(sql, new MemberRowMapper(), m_acctid);
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+	
 	public int checkM_role(int member_id) {
 		this.sql = "select m_role from final_member where member_id=?";
 		return this.jdbcTemplate.queryForObject(sql, int.class, member_id);
