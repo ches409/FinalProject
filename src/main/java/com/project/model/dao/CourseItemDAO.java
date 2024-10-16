@@ -18,6 +18,34 @@ public class CourseItemDAO extends ItemDAO {
 		init();
 	}
 
+	public int register(int courseId, int memberId) {
+		this.sql = query.get("register");
+		int rowNum = -1;
+
+		rowNum = this.getJdbcTemplate().update(sql, new Object[] { courseId, memberId });
+
+		return rowNum;
+	}
+
+	public int checkAlreadyRegistered(int courseId, int memberId) {
+		this.sql = query.get("checkAlreadyRegistered");
+		int rowNum = -1;
+
+		rowNum = this.getJdbcTemplate().queryForObject(sql, Integer.class, new Object[] { courseId, memberId });
+
+		return rowNum;
+	}
+
+	public int checkCourseConflicts(int memberId, int courseId) {
+		this.sql = query.get("checkCourseConflicts");
+		int rowNum = -1;
+
+		rowNum = this.getJdbcTemplate().queryForObject(sql, Integer.class,
+				new Object[] { courseId, courseId, memberId });
+
+		return rowNum;
+	}
+
 	public List<CourseItem> selectByDates(int startNum, int endNum) {
 		this.sql = query.get("selectByDates");
 //		and sysdate between e_sdate and e_edate""";
@@ -651,6 +679,36 @@ public class CourseItemDAO extends ItemDAO {
 				WHERE
 					course_id = ?
 					AND sysdate BETWEEN fcq.Q_REGDATE AND fcq.Q_REGDATE + fcq.Q_EFFTIME / 24 / 60
+				""");
+		this.query.put("checkCourseConflicts", """
+				SELECT DISTINCT count(fcs.COURSE_ID)
+				FROM final_course_student fcs
+				JOIN final_course_schedule fsch1 ON fcs.COURSE_ID = fsch1.COURSE_ID
+				JOIN final_course_schedule fsch2 ON fsch2.COURSE_ID = ?
+				JOIN final_course_day fcd1 ON fcd1.COURSE_ID = fsch1.COURSE_ID
+				JOIN final_course_day fcd2 ON fcd2.COURSE_ID = ?
+				WHERE fcs.MEMBER_ID = ?
+				  AND (fsch1.s_stime < fsch2.s_etime AND fsch1.s_etime > fsch2.s_stime)
+				  AND (fsch1.s_sdate <= fsch2.s_edate AND fsch1.s_edate >= fsch2.s_sdate)
+				  AND (
+				    (fcd1.D_MON = 1 AND fcd2.D_MON = 1) OR
+				    (fcd1.D_TUE = 1 AND fcd2.D_TUE = 1) OR
+				    (fcd1.D_WED = 1 AND fcd2.D_WED = 1) OR
+				    (fcd1.D_THU = 1 AND fcd2.D_THU = 1) OR
+				    (fcd1.D_FRI = 1 AND fcd2.D_FRI = 1) OR
+				    (fcd1.D_SAT = 1 AND fcd2.D_SAT = 1) OR
+				    (fcd1.D_SUN = 1 AND fcd2.D_SUN = 1)
+				  )
+				  """);
+		this.query.put("register", """
+				INSERT INTO FINAL_COURSE_REGISTER fcr
+				VALUES (?, ?, sysdate, default)
+				""");
+
+		this.query.put("checkAlreadyRegistered", """
+				SELECT count(*)
+				FROM FINAL_COURSE_REGISTER fcr
+				WHERE fcr.COURSE_ID = ? AND fcr.MEMBER_ID = ? AND fcr.C_REGSTATUS = 0
 				""");
 	}
 }

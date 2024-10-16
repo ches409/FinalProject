@@ -14,9 +14,6 @@
 	.fig.qr {
 		display: none;
 	}
-	.tab.inst {
-		grid-column-end: inherit;
-	}
 	.qr {
 		grid-column-start: 1;
 		grid-column-end: 3;

@@ -74,6 +74,20 @@ function clickHandler(event) {
 	}
 }
 
+function qrBtnHandler(event) {
+	const id = event.target.id;
+	const url = '/api/checkin/createQR';
+
+	if (!confirm('QR코드를 발급하시겠습니까?')) {
+		return;
+	};
+	switch (id) {
+		case 'new':
+			sendRequest(url, 'GET', responseHandler);
+			break;
+	}
+}
+
 function calculatePosition(size, percentage) {
 	return size / 100 * percentage;
 }
@@ -99,38 +113,15 @@ function setChart() {
 
 function setButtons() {
 	const btns = document.querySelectorAll('.btn.attend');
+	const qrBtns = document.querySelectorAll('.qrBtn');
 
 	for (const btn of btns) {
 		btn.addEventListener('click', clickHandler);
 	}
-}
 
-function setFloatingIcon() {
-	const floatingIcon = document.querySelector('.floating-icon');
-	const subMenu = floatingIcon.querySelector('.sub-menu');
-	const list = subMenu.querySelectorAll('li');
-
-	floatingIcon.addEventListener('click', function() {
-		floatingIcon.classList.toggle('clicked');
-		subMenu.classList.toggle('hidden');
-
-		for (let i = 0; i < list.length; i++) {
-			setTimeout(() => {
-				list[i].classList.toggle('show');
-			}, i * 200); // 200ms(0.2초) 간격으로 실행
-		}
-	});
-
-	window.addEventListener('resize', () => {
-		if (window.innerWidth > 768) {
-			floatingIcon.classList.remove('clicked');
-			subMenu.classList.add('hidden');
-
-			for (let i = 0; i < list.length; i++) {
-				list[i].classList.remove('show');
-			}
-		}
-	})
+	for (const btn of qrBtns) {
+		btn.addEventListener('click', qrBtnHandler);
+	}
 }
 
 function calculateTimer(duration, display) {
@@ -161,11 +152,43 @@ function setTimer() {
 	calculateTimer(duration, display)
 }
 
+function setFloatingIcon() {
+	const floatingIcon = document.querySelector('.floating-icon');
+	const subMenu = floatingIcon.querySelector('.sub-menu');
+	const list = subMenu.querySelectorAll('li');
+
+	floatingIcon.addEventListener('click', function() {
+		floatingIcon.classList.toggle('clicked');
+		subMenu.classList.toggle('hidden');
+
+		for (let i = 0; i < list.length; i++) {
+			setTimeout(() => {
+				list[i].classList.toggle('show');
+			}, i * 200); // 200ms(0.2초) 간격으로 실행
+		}
+	});
+
+	window.addEventListener('resize', () => {
+		if (window.innerWidth > 768) {
+			floatingIcon.classList.remove('clicked');
+			subMenu.classList.add('hidden');
+
+			for (let i = 0; i < list.length; i++) {
+				list[i].classList.remove('show');
+			}
+		}
+	})
+}
+
 function init() {
 	setChart();
 	setButtons();
-	setFloatingIcon();
-	setTimer();
+	try {
+		setTimer();
+		setFloatingIcon();
+	} catch (e) {
+		console.log('플로팅 아이콘 오류');
+	}
 }
 
 window.addEventListener('load', init);

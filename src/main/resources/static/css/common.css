@@ -20,19 +20,19 @@ a {
 
 /* 컨테이너 정의 */
 .container {
-	width: 1440px;
-	height: 1080px;
+	width: 100vw;
+	height: 100vh;
 }
 
 /* 사이드바 크기 정의 */
 .sidebar {
-	width: 360px;
+	width: 25%;
 	height: 100%;
 }
 
 /* 본문 크기 정의 */
 .contents {
-	width: 1080px;
+	width: 75%;
 	height: 100%;
 }
 

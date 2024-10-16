@@ -53,9 +53,6 @@
 					<tr>
 						<td class="qrBtn" id="new"><span class="f24">QR 발급</span></td>
 					</tr>
-					<tr>
-						<td class="qrBtn" id="re"><span class="f24">QR 재발급</span></td>
-					</tr>
 				</table>
 				<div class="fig qr">
 					<div class="ta cen">
@@ -67,8 +64,7 @@
 								</div>
 								<div>
 									<img class="img s200"
-										src="https://quickchart.io/qr?text=${info.qrCode}&centerImageUrl=https://imgur.com/RB0yUtw.png"
-										alt="">
+										src="/api/checkin/getQRImage?id=${info.courseId }" alt="">
 								</div>
 							</div>
 						</c:if>
@@ -120,14 +116,13 @@
 							<div class="grid cen h" id="curr">
 								<div class="line"></div>
 								<p>
-									<b>나</b> <span id="myPer"><fmt:formatNumber
+									<b>금일 출석률</b> <span id="myPer"><fmt:formatNumber
 											value="${stats.myCnt/stats.totalCnt }" type="percent"
 											pattern="0.0%"></fmt:formatNumber></span>
 								</p>
 							</div>
 						</div>
 					</div>
-					<jsp:include page="./checkin_floating.jsp"></jsp:include>
 				</div>
 			</div>
 		</main>

@@ -17,21 +17,16 @@
 		</div>
 	</div>
 	<ul class="menulist" id="main">
-		<a href="/?t=2"><c:set var="main" value="main"></c:set>
+		<a href="/"><c:set var="main" value="main"></c:set>
 			<li
 			class="menu <c:if test="${menu eq main}">selected</c:if>
 				cffffff">코스
 		</li> </a>
-		<a href="/checkin?t=2"><c:set var="checkin" value="checkin"></c:set>
+		<a href="/checkin"><c:set var="checkin" value="checkin"></c:set>
 			<li
 			class="menu <c:if test="${menu eq checkin}">selected</c:if>
 				cffffff">출석
 				체크</li> </a>
-		<a href="/alert"><c:set var="alert" value="alert"></c:set>
-			<li
-			class="menu <c:if test="${menu eq alert}">selected</c:if>
-				cffffff">알림
-		</li> </a>
 		<a href="/notice?t=2"><c:set var="notice" value="notice"></c:set>
 			<li
 			class="menu <c:if test="${menu eq notice}">selected</c:if>

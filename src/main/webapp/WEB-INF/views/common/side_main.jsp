@@ -29,11 +29,6 @@
 			class="menu <c:if test="${menu eq register}">selected</c:if>
 				cffffff">수강
 				신청</li> </a>
-		<a href="/alert"><c:set var="alert" value="alert"></c:set>
-			<li
-			class="menu <c:if test="${menu eq alert}">selected</c:if>
-				cffffff">알림
-		</li> </a>
 		<a href="/notice"><c:set var="notice" value="notice"></c:set>
 			<li
 			class="menu <c:if test="${menu eq notice}">selected</c:if>
