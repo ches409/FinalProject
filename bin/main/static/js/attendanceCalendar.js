@@ -33,6 +33,41 @@ function dialogHandler() {
 
 }
 
+function getDateColor(a_status){
+	if(a_status==1){
+		return 'monthDate-a';
+	}else if(a_status==2){
+		return 'monthDate-ab';
+	}else if(a_status==3){
+		return 'monthDate-l';
+	}else{
+		return 'monthDate-nc';
+	}
+}
+
+function getDateText(req_type, r_status){
+	if(req_type==1){
+		if(r_status == 0){
+			return '정정요청중';
+		}else if(r_status == 1){
+			return '정정요청승낙';
+		}else{
+			return '정정요청거절';
+		}
+	}else if(req_type==2){
+		if(r_status == 0){
+			return '공가요청중';
+		}else if(r_status == 1){
+			return '공가요청승낙';
+		}else{
+			return '공가요청거절';
+		}
+	}else{
+		return '';
+	}
+	
+}
+
 function getCalender(number){
     const yearMonth = document.querySelector('#yearMonth');
     const calendarBox = document.querySelector('#calendarBox');
@@ -57,7 +92,6 @@ function getCalender(number){
 	fetch('getStudentCalendar?c_year='+today.getFullYear()+'&c_month='+ (today.getMonth()+1)) // url만 지정하면 get 방식, 2번째 매개변수는 option객체
 	.then(response => response.json()) // 비동기 처리의 결과를 then이 받는다.
 	.then(obj => {
-		console.log(number)
 		let firstDate = new Date(new Date(obj[0].dt).getFullYear(), new Date(obj[0].dt).getMonth(), 1);
 	    let lastDate= new Date(new Date(obj[0].dt).getFullYear(), new Date(obj[0].dt).getMonth()+1, 0);
 	    let prevLastDate = new Date(new Date(obj[0].dt).getFullYear(), new Date(obj[0].dt).getMonth(), 0);
@@ -83,7 +117,7 @@ function getCalender(number){
 	        if(i==6-prevLastDay){
 	            firstWeekBox += '<td class="monthDate-w">'+i+'</td>';
 	        }else{
-	            firstWeekBox += '<td class="monthDate-nc">'+i+'</td>';
+	            firstWeekBox += '<td class="' + getDateColor(obj[i-1].a_status) + '">'+i+'</td>';
 	        }
 	        
 	    }
@@ -94,7 +128,7 @@ function getCalender(number){
 	            }else if(i==7){
 	                firstWeekBox += '<td class="monthDate-w">'+i+'</td>';
 	            }else{
-	                firstWeekBox += '<td class="monthDate-nc">'+i+'</td>';
+	                firstWeekBox += '<td class="' + getDateColor(obj[i-1].a_status) + '">'+i+'</td>';
 	            }
 	        }
 	    }
@@ -109,7 +143,7 @@ function getCalender(number){
 	        }else if(lastDay==6 && i==0){
 	            lastWeekBox += '<td class="monthDate-w">'+ (lastDate.getDate()) +'</td>';
 	        }else{
-	            lastWeekBox += '<td class="monthDate-nc">'+ (lastDate.getDate()-i) +'</td>';
+	            lastWeekBox += '<td class="' + (obj.length>=lastDate.getDate()-i ? getDateColor(obj[lastDate.getDate()-i-1].a_status) : 'monthDate-nc') + '">'+ (lastDate.getDate()-i) +'</td>';
 	        }
 	    }
 
@@ -120,7 +154,7 @@ function getCalender(number){
 	    }
 	    lastWeekBox +='</tr>';
 	                    
-	    
+		
 	    let weekBoxs='';
 	    for(j = 8-firstDay; j < lastDate.getDate()-lastDay; j++){ 
 	        if(j%7==(8-firstDay)%7){
@@ -128,7 +162,7 @@ function getCalender(number){
 	        }else if(j%7==(14-firstDay)%7){
 	            weekBoxs += '<td class="monthDate-w">'+ j +'</td></tr>';
 	        }else{
-	            weekBoxs += '<td class="monthDate-nc">'+ j +'</td>';
+	            weekBoxs += '<td class="' + getDateColor(obj[j-1].a_status) + '">'+ j +'</td>';
 	        }
 	        
 	    }  
