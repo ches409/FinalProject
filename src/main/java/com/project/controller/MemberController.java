@@ -202,18 +202,17 @@ public class MemberController {
 	@PostMapping("/changepwdProcess")
 	public String changePwdProcessHandler(
 			@RequestParam(value="member_id") int member_id,
-			@RequestParam("m_acctpwd") String newpwd,
+			@RequestParam("m_acctpwd") String m_acctpwd,
 			@RequestParam("confirmpwd") String confirmpwd,
 			Model model) {
-		System.out.println("member_id: " + member_id);
-		if(!newpwd.equals(confirmpwd)) {
+		if(!m_acctpwd.equals(confirmpwd)) {
 			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "changepwd";
 		}
 		
 		MemberDO memberDo = new MemberDO();
 		memberDo.setMember_id(member_id);
-		memberDo.setM_acctpwd(newpwd);
+		memberDo.setM_acctpwd(m_acctpwd);
 		
 		int result = memberSo.updateM_acctpwd(memberDo);
 		
