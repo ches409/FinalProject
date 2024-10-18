@@ -89,6 +89,7 @@ public class MemberSO {
 	
 	// 비밀번호 재설정
 	public int updateM_acctpwd(MemberDO member) {
+		member.setM_acctpwd(bCryptPasswordEncoder.encode(member.getM_acctpwd()));
 		return memberDao.updatePassword(member);
 	}
 	
