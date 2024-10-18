@@ -49,6 +49,7 @@ public class MemberSO {
 		if(member == null) {
 			return null;
 		}
+		// 해싱되지 않은 기존 비밀번호일 때 해싱해서 DB에 업데이트
 		if(member.getM_acctpwd().length() < 60) {
 			if(!m_acctpwd.equals(member.getM_acctpwd())) {
 				return null;
@@ -91,4 +92,7 @@ public class MemberSO {
 		return memberDao.updatePassword(member);
 	}
 	
+	public int updateM_status(MemberDO member) {
+		return memberDao.updateMemberStatus(member);
+	}
 }

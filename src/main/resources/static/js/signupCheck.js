@@ -55,7 +55,7 @@ function checkIdDuplication(id) {
 
 function validatePassword() {
 	const m_acctpwd = document.querySelector('#m_acctpwd');
-	const confirmpw = document.querySelector('#confirmpw');
+	const confirmpwd = document.querySelector('#confirmpwd');
 	const passerr = document.querySelector('#passerr');
 	const cfmmsg = document.querySelector('#cfmmsg');
 	const cfmerr = document.querySelector('#cfmerr');
@@ -206,7 +206,7 @@ function init() {
 	
 	document.querySelector('#m_acctid').addEventListener('input', validateM_acctid);
 	document.querySelector('#m_acctpwd').addEventListener('input', validatePassword);
-	document.querySelector('#confirmpw').addEventListener('input', validatePassword);
+	document.querySelector('#confirmpwd').addEventListener('input', validatePassword);
 	document.querySelector('#m_email').addEventListener('input', validateM_email);
 	document.querySelector('#m_name').addEventListener('input', validateM_name);
 	document.querySelector('#m_tel').addEventListener('input', validateM_tel);

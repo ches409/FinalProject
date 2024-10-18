@@ -14,7 +14,7 @@
   <div id="container">
     <jsp:include page="common/find_header.jsp" />
     <main>
-      <form id="loginForm" action="" method="POST" <!--onsubmit="submitLoginForm(event)-->">
+      <form id="loginForm" action="/loginProcess" method="POST"> <!--onsubmit="submitLoginForm(event)-->
         <input type="text" id="m_acctid" name="m_acctid" placeholder="아이디 입력" required />
         <input type="password" id="m_acctpwd" name="m_acctpwd" placeholder="비밀번호 입력" required />
         <button type="submit">로그인</button>

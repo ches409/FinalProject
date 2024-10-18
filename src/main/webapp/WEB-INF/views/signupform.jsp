@@ -56,10 +56,10 @@
                     </tr>
                     <tr>
                         <th>
-                            <label for="confirmpw">비밀번호 확인 <span>*</span></label>
+                            <label for="confirmpwd">비밀번호 확인 <span>*</span></label>
                         </th>
                         <td>
-                            <input type="password" name="confirmpw" id="confirmpw" required />
+                            <input type="password" name="confirmpwd" id="confirmpwd" required />
                             <p id="cfmmsg">위의 비밀번호를 다시 입력하세요.</p>
                             <p id="cfmerr"></p>
                         </td>

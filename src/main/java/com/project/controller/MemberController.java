@@ -17,13 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.model.MemberDO;
 import com.project.model.MemberSO;
-import com.project.model.JWT.JwtUtil;
+//import com.project.model.JWT.JwtUtil;
 import com.project.model.request.LoginRequest;
 import com.project.model.request.SignupRequest;
-import com.project.model.response.ErrorResponse;
+//import com.project.model.response.ErrorResponse;
 import com.project.model.response.LoginResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -32,8 +32,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberSO memberSo;
-	@Autowired
-	private JwtUtil jwtUtil;
+	/*
+	 * @Autowired private JwtUtil jwtUtil;
+	 */
 	
 	@GetMapping("/login")
 	public String loginHandler() {
@@ -42,7 +43,6 @@ public class MemberController {
 	
 	/*
 	 * // 토큰 구현 중단
-	 * 
 	 * @PostMapping("/loginProcess") public ResponseEntity<?>
 	 * loginProcessHandler(@RequestBody LoginRequest req) { try { LoginResponse auth
 	 * = memberSo.login(req.getM_acctid(), req.getM_acctpwd());
@@ -202,10 +202,10 @@ public class MemberController {
 	@PostMapping("/changepwdProcess")
 	public String changePwdProcessHandler(
 			@RequestParam(value="member_id") int member_id,
-			@RequestParam("newpwd") String newpwd,
+			@RequestParam("m_acctpwd") String newpwd,
 			@RequestParam("confirmpwd") String confirmpwd,
 			Model model) {
-		
+		System.out.println("member_id: " + member_id);
 		if(!newpwd.equals(confirmpwd)) {
 			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "changepwd";
@@ -289,6 +289,14 @@ public class MemberController {
 		model.addAttribute("menu", "mypage");
 		return "mypage";
 	}
+	
+//	@GetMapping("leave")
+//	public String leaveProcessHandler(HttpSession session, int member_id) {
+//		LoginResponse auth = (LoginResponse)session.getAttribute("auth");
+//		MemberDO member = memberSo.updateM_status(auth.getMember_id());
+//		session.invalidate();
+//		return "redirect:/login";
+//	}
 	
 	
 }
