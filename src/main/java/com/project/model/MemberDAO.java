@@ -116,8 +116,9 @@ public class MemberDAO {
             member.setM_acctid(generateTemporaryId());
         }
 
-        if (member.getM_acctpwd() == null || member.getM_acctpwd().isEmpty()) {
-            member.setM_acctpwd("defaultPassword");
+        if (member.getM_acctpwd() != null && member.getM_acctpwd().length() > 15) {
+        	member.setM_acctpwd(member.getM_acctpwd().substring(0, 15));
+            System.out.println("Trimmed m_acctpwd to 15 chars: " + member.getM_acctpwd());
         }
         if (member.getM_acctid() != null && member.getM_acctid().length() > 15) {
             member.setM_acctid(member.getM_acctid().substring(0, 15));

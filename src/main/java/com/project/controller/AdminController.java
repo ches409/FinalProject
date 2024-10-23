@@ -87,13 +87,15 @@ public class AdminController {
             @RequestParam("tel") String tel) {
         try {
             MemberDO newInstructor = new MemberDO();
+            String generatedId = "inst_user_" + UUID.randomUUID().toString();
             newInstructor.setM_name(name);
             newInstructor.setM_email(email);
             newInstructor.setM_dept(department);
             newInstructor.setM_tel(tel);
             newInstructor.setM_role(1);
-            newInstructor.setM_acctid("inst_user_" + UUID.randomUUID().toString());
-            newInstructor.setM_acctpwd("");
+            newInstructor.setM_acctid(generatedId);
+            newInstructor.setM_acctpwd(generatedId);
+
 
             memberDao.insertMember(newInstructor);
 

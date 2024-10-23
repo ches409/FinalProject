@@ -1,5 +1,5 @@
 .bg-f2f2f2 {
-    background-color: #F2F2F2 !important;
+    background-color: #fff !important;
 }
 
 .grayscale {
@@ -7,7 +7,7 @@
 }
 
 .course-notice.white {
-    background-color: white;
+    background-color: #F2F2F2;
 }
 
 ul.course-notice.white {
